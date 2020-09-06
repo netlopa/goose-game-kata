@@ -2,7 +2,6 @@ package com.netlopa.goosegame.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -107,7 +106,7 @@ public class GooseControllerTest {
 		controller.addPlayer("Pippo");
 		controller.movePlayer("Pluto");
 	}
-	
+
 	@Test
 	public void testMovePlayerWithWin() throws DuplicatePlayerException, InvalidDiceCombinationException, PlayerNotFoundException {
 		GooseControllerInterface controller = new GooseController(cells);
@@ -117,11 +116,11 @@ public class GooseControllerTest {
 		controller.movePlayer("Pippo",6,6);
 		controller.movePlayer("Pippo",6,6);
 		controller.movePlayer("Pippo",6,6); // 60
-		
+
 		String result = controller.movePlayer("Pippo", 1, 2);
 		assertEquals("Pippo rolls 1, 2. Pippo moves from 60 to 63. Pippo Wins!!",result);
 	}
-	
+
 	@Test
 	public void testMovePlayerWithBounce() throws DuplicatePlayerException, InvalidDiceCombinationException, PlayerNotFoundException {
 		GooseControllerInterface controller = new GooseController(cells);
@@ -131,7 +130,7 @@ public class GooseControllerTest {
 		controller.movePlayer("Pippo",6,6);
 		controller.movePlayer("Pippo",6,6);
 		controller.movePlayer("Pippo",6,6); // 60
-		
+
 		String result = controller.movePlayer("Pippo", 3, 2);
 		assertEquals("Pippo rolls 3, 2. Pippo moves from 60 to 63. Pippo bounces! Pippo returns to 61",result);
 	}
@@ -154,6 +153,51 @@ public class GooseControllerTest {
 
 		assertTrue(dice1 >= 1 && dice1 <= 6 && dice2 >= 1 && dice2 <= 6);
 
+	}
+
+	@Test
+	public void testCommandAddPlayer() {
+		GooseControllerInterface controller = new GooseController(cells);
+		String result = controller.runCommand("add player Pippo");
+		assertEquals("players: Pippo", result);
+	}
+
+	@Test
+	public void testCommandAddPlayerDuplicated() {
+		GooseControllerInterface controller = new GooseController(cells);
+		controller.runCommand("add player Pippo");
+		String result = controller.runCommand("add player Pippo");
+		assertEquals("Pippo: already existing player", result);
+	}
+
+	@Test
+	public void testCommandMovePlayer() {
+		GooseControllerInterface controller = new GooseController(cells);
+		controller.runCommand("add player Pippo");
+		String result = controller.runCommand("move Pippo 4, 3");
+		assertEquals("Pippo rolls 4, 3. Pippo moves from Start to 7",result);
+	}
+
+	@Test
+	public void testCommandMoveNotExistingPlayer() {
+		GooseControllerInterface controller = new GooseController(cells);
+		String result = controller.runCommand("move Pippo");
+		assertEquals("Pippo: player doesn't exists", result);
+	}
+
+	@Test
+	public void testCommandMovePlayerRandomly() {
+		GooseControllerInterface controller = new GooseController(cells);
+		controller.runCommand("add player Pippo");
+		String result = controller.runCommand("move Pippo");
+		assertTrue(result.contains("Pippo rolls"));
+	}
+
+	@Test
+	public void testCommandInvalid() {
+		GooseControllerInterface controller = new GooseController(cells);
+		String result = controller.runCommand("something");
+		assertEquals("Invalid Command", result);
 	}
 
 }
