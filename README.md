@@ -3,6 +3,23 @@ Goose game is a game where two or more players move pieces around a track by rol
 
 This kata has been invented by [Matteo Vaccari](https://github.com/xpmatteo), you can find the original slides [here](https://www.slideshare.net/pierodibello/il-dilettevole-giuoco-delloca-coding-dojo).
 
+## How to run this application
+
+Make sure that you have all the prerequisites that are:
+
+- Java 8
+- Maven
+- Git
+
+Then, you need to run the following commands. 
+
+```
+git clone https://github.com/netlopa/goose-game-kata.git
+cd goose-game-kata
+mvn clean package
+java -jar target/goosegame-0.0.1-SNAPSHOT.jar
+```
+
 ## General requirements
 - You may use whatever programming language you prefer. Use something that you know well.
 - You should commit your code on GitHub or any other SCM repository you prefer (e.g. bitbucket, gitlab, etc) and send us the link.
